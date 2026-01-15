@@ -54,7 +54,7 @@ const Login = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "out" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         className="relative z-10 w-full max-w-[440px] px-4"
       >
         <div className="bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl p-8 border border-white/40">

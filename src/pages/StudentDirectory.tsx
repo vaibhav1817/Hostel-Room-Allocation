@@ -3,19 +3,16 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Layout from '@/components/Layout';
 import PageLayout from '@/components/PageLayout';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
     Search,
     ArrowLeft,
-    User,
     Mail,
     Phone,
     MoreHorizontal,
-    Shield,
-    Trash2,
-    RefreshCcw
+    Trash2
 } from 'lucide-react';
 import {
     DropdownMenu,

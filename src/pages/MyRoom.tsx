@@ -16,7 +16,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { useUserData } from '@/contexts/UserDataContext';
 import { motion } from 'framer-motion';
 
 const MyRoom = () => {
@@ -172,7 +171,7 @@ const MyRoom = () => {
                       Included Facilities
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {roomDetails.facilities.map((facility, index) => (
+                      {roomDetails.facilities.map((facility: string, index: number) => (
                         <Badge key={index} variant="secondary" className="px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-100">
                           {facility}
                         </Badge>

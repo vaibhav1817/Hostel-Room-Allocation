@@ -14,7 +14,6 @@ import {
   CardTitle
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -24,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Badge } from '@/components/ui/badge';
 
 const RoomChange = () => {
@@ -37,13 +35,6 @@ const RoomChange = () => {
   const [reason, setReason] = useState('');
   const [urgency, setUrgency] = useState('normal');
   const [loading, setLoading] = useState(false);
-
-  const currentRoom = userData?.roomDetails || {
-    roomNumber: 'N/A',
-    block: 'N/A',
-    floor: 'N/A',
-    type: 'N/A'
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
