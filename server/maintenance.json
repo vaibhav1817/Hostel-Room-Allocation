@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1768482826739,
+    "type": "Others",
+    "location": "101",
+    "description": "Room marked for maintenance by admin",
+    "status": "Resolved",
+    "date": "15/1/2026",
+    "timestamp": 1768482826802
+  },
+  {
+    "id": "REQ-2238",
+    "date": "15/1/2026",
+    "type": "Electrical",
+    "priority": "Medium",
+    "status": "Resolved",
+    "description": "mnbvcxzkjhgfdsapoiuytrewq",
+    "location": "Room 120, Block E Block",
+    "fileUrl": "http://localhost:5002/uploads/1768485031650-ETL.jpg",
+    "timestamp": 1768485031956,
+    "resolvedAt": 1768485384376
+  }
+]
