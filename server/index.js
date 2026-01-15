@@ -3,11 +3,14 @@ const cors = require('cors');
 // const Razorpay = require('razorpay'); // Uncomment when you have keys
 
 const app = express();
-const PORT = 5002;
+const PORT = process.env.PORT || 5002;
 const ALLOWED_ADMIN_IDS = ['ADM-001', 'ADM-002', 'ADM-003', 'ADM-004', 'ADM-005'];
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the React app build
+app.use(express.static(path.join(__dirname, '../dist')));
 
 const fs = require('fs');
 const path = require('path');
@@ -771,9 +774,13 @@ app.delete('/api/announcements/:id', (req, res) => {
     res.json({ success: true });
 });
 
+// Serve index.html for all other routes (React Router support)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 // Start Server
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Ready to handle payment & admin requests`);
+    console.log(`Server running on port ${PORT}`);
 });
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '@/lib/api';
 import Layout from '@/components/Layout';
 import PageLayout from '@/components/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -46,7 +47,7 @@ const PaymentPage = () => {
   const fetchHistory = async () => {
     if (!user?.id || !userData?.roomDetails) return;
     try {
-      const res = await fetch(`http://localhost:5002/api/payments?studentId=${user.id}`);
+      const res = await fetch(`${API_BASE_URL}/api/payments?studentId=${user?.id}`);
       const data = await res.json();
       setHistory(data);
     } catch (err) {
@@ -93,7 +94,7 @@ const PaymentPage = () => {
       // Record Transaction
       const transactionId = `TXN${Math.floor(Math.random() * 10000000)}`;
       try {
-        const res = await fetch('http://localhost:5002/api/payments', {
+        const res = await fetch(`${API_BASE_URL}/api/payments`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -136,7 +137,7 @@ const PaymentPage = () => {
     }
 
     try {
-        const data = await fetch('http://localhost:5002/api/create-order', {
+        const data = await fetch(`${API_BASE_URL}/api/create-order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ amount: parseInt(amount) })

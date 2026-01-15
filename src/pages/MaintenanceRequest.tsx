@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '@/lib/api';
 import Layout from '@/components/Layout';
 import PageLayout from '@/components/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -55,7 +56,7 @@ const MaintenanceRequest = () => {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch('http://localhost:5002/api/maintenance');
+      const res = await fetch(`${API_BASE_URL}/api/maintenance`);
       const data = await res.json();
       if (Array.isArray(data)) {
         setHistory(data);
@@ -113,7 +114,7 @@ const MaintenanceRequest = () => {
         formData.append('image', selectedFile);
       }
 
-      const response = await fetch('http://localhost:5002/api/maintenance', {
+      const response = await fetch(`${API_BASE_URL}/api/maintenance`, {
         method: 'POST',
         body: formData,
       });
@@ -145,7 +146,7 @@ const MaintenanceRequest = () => {
     if (!selectedRequest) return;
 
     try {
-      const res = await fetch(`http://localhost:5002/api/maintenance/${selectedRequest.id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/api/maintenance/${selectedRequest.id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),

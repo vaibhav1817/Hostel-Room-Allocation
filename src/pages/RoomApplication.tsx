@@ -14,6 +14,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '@/lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, User, Bed, ArrowRight, CheckCircle2, Building, ShieldCheck, Asterisk, FileText, ArrowLeft, Search, RefreshCcw } from 'lucide-react';
 
@@ -31,7 +32,7 @@ const RoomApplication = () => {
 
     setIsAutoAllocating(true);
     try {
-      const res = await fetch('http://localhost:5002/api/admin/auto-allocate', { method: 'POST' });
+      const res = await fetch(`${API_BASE_URL}/api/admin/auto-allocate`, { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         toast.success(`Successfully allocated ${data.allocated} students!`);
@@ -49,7 +50,7 @@ const RoomApplication = () => {
   // Admin: Fetch Applications
   useEffect(() => {
     if (user?.role === 'admin') {
-      fetch('http://localhost:5002/api/applications')
+      fetch(`${API_BASE_URL}/api/applications`)
         .then(res => res.json())
         .then(data => setApplications(data))
         .catch(err => console.error(err));
@@ -60,7 +61,7 @@ const RoomApplication = () => {
     if (!window.confirm("Are you sure you want to withdraw your application?")) return;
 
     try {
-      const response = await fetch('http://localhost:5002/api/applications', {
+      const response = await fetch(`${API_BASE_URL}/api/applications`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ studentId: user?.id })
@@ -126,7 +127,7 @@ const RoomApplication = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:5002/api/applications', {
+      const response = await fetch(`${API_BASE_URL}/api/applications`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

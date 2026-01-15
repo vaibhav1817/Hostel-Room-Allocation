@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { API_BASE_URL } from '@/lib/api';
 
 interface Roommate {
     name: string;
@@ -53,7 +54,7 @@ export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const fetchUserData = async () => {
             if (user) {
                 try {
-                    const response = await fetch(`http://localhost:5002/api/student/me?studentId=${user.id}`);
+                    const response = await fetch(`${API_BASE_URL}/api/student/me?studentId=${user?.id}`);
                     const data = await response.json();
 
                     if (data.status === 'Allocated' && data.roomDetails) {

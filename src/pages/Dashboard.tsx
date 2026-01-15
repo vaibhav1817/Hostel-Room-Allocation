@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserData } from '@/contexts/UserDataContext';
 import Layout from '@/components/Layout';
 import PageLayout from '@/components/PageLayout';
+import { API_BASE_URL } from '@/lib/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Building2, UserCheck, AlertCircle, CreditCard, Sun, Moon, Utensils, Coffee, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -44,7 +45,7 @@ const AdminDashboard = () => {
   const [adminAnnouncements, setAdminAnnouncements] = useState<any[]>([]);
 
   const fetchAnnouncements = () => {
-    fetch('http://localhost:5002/api/announcements')
+    fetch('${API_BASE_URL}/api/announcements')
       .then(res => res.json())
       .then(data => setAdminAnnouncements(data))
       .catch(console.error);
@@ -56,7 +57,7 @@ const AdminDashboard = () => {
 
   const handleAddAnnouncement = async () => {
     try {
-      await fetch('http://localhost:5002/api/announcements', {
+      await fetch('${API_BASE_URL}/api/announcements', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: noteTitle, message: noteMessage })
@@ -71,7 +72,7 @@ const AdminDashboard = () => {
   const handleDeleteAnnouncement = async (id: number) => {
     if (!confirm("Are you sure you want to delete this announcement?")) return;
     try {
-      await fetch(`http://localhost:5002/api/announcements/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE_URL}/api/announcements/${id}`, { method: 'DELETE' });
       fetchAnnouncements();
       toast.success("Announcement deleted");
     } catch { toast.error("Failed to delete"); }
@@ -84,7 +85,7 @@ const AdminDashboard = () => {
     if (prompt !== 'CONFIRM') return;
 
     try {
-      const res = await fetch('http://localhost:5002/api/admin/reset-semester', { method: 'POST' });
+      const res = await fetch('${API_BASE_URL}/api/admin/reset-semester', { method: 'POST' });
       if (res.ok) {
         toast.success("Hostel reset successfully.");
         window.location.reload();
@@ -99,9 +100,9 @@ const AdminDashboard = () => {
       try {
         const timestamp = Date.now();
         const [statsRes, activityRes, appsRes] = await Promise.all([
-          fetch(`http://localhost:5002/api/admin/stats?t=${timestamp}`),
-          fetch(`http://localhost:5002/api/admin/recent-activity?t=${timestamp}`),
-          fetch(`http://localhost:5002/api/applications?t=${timestamp}`)
+          fetch(`${API_BASE_URL}/api/admin/stats?t=${timestamp}`),
+          fetch(`${API_BASE_URL}/api/admin/recent-activity?t=${timestamp}`),
+          fetch(`${API_BASE_URL}/api/applications?t=${timestamp}`)
         ]);
 
         if (statsRes.ok) setStats(await statsRes.json());
@@ -460,13 +461,13 @@ const StudentDashboard = () => {
   const [applicationStatus, setApplicationStatus] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:5002/api/announcements')
+    fetch('${API_BASE_URL}/api/announcements')
       .then(res => res.json())
       .then(data => setAnnouncements(data))
       .catch(err => console.error("Failed to load announcements", err));
 
     if (user?.email) {
-      fetch('http://localhost:5002/api/applications')
+      fetch('${API_BASE_URL}/api/applications')
         .then(res => res.json())
         .then(apps => {
           const myApp = apps.find((a: any) => a.email === user.email && a.status !== 'Archived');

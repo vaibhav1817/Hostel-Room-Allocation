@@ -14,6 +14,7 @@ import Layout from '@/components/Layout';
 import PageLayout from '@/components/PageLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { API_BASE_URL } from '@/lib/api';
 import {
   Card,
   CardContent,
@@ -69,8 +70,8 @@ const RoomDetails = () => {
       setLoading(true);
       try {
         const [roomRes, appsRes] = await Promise.all([
-          fetch(`http://localhost:5002/api/rooms/${id}`),
-          fetch('http://localhost:5002/api/applications')
+          fetch(`${API_BASE_URL}/api/rooms/${id}`),
+          fetch(`${API_BASE_URL}/api/applications`)
         ]);
 
         if (roomRes.ok) {
@@ -118,7 +119,7 @@ const RoomDetails = () => {
 
   const handleRemoveStudent = async (studentId: string) => {
     try {
-      const response = await fetch('http://localhost:5002/api/admin/remove-occupant', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/remove-occupant`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ roomId: id, studentId })
@@ -139,7 +140,7 @@ const RoomDetails = () => {
 
   const handleUpdateStatus = async (status: string) => {
     try {
-      const response = await fetch('http://localhost:5002/api/admin/update-room-status', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/update-room-status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ roomId: id, status })

@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { API_BASE_URL } from '@/lib/api';
 import { ArrowLeft, Search, UserPlus } from 'lucide-react';
 import { getYearFromUSN } from './RoomDetailsDefinitions';
 import Layout from '@/components/Layout';
@@ -74,14 +75,13 @@ const AssignRoom = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [roomsRes, appsRes] = await Promise.all([
-          fetch('http://localhost:5002/api/admin/rooms'),
-          fetch('http://localhost:5002/api/applications')
+        const [roomRes, appsRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/rooms/${id}`),
+          fetch(`${API_BASE_URL}/api/applications`)
         ]);
 
-        if (roomsRes.ok) {
-          const allRooms = await roomsRes.json();
-          const foundRoom = allRooms.find((r: any) => r.id === id);
+        if (roomRes.ok) {
+          const foundRoom = await roomRes.json();
           setRoom(foundRoom);
         }
 
@@ -136,7 +136,7 @@ const AssignRoom = () => {
 
   const handleAssignStudent = async (studentId: string) => {
     try {
-      const response = await fetch('http://localhost:5002/api/admin/assign-room', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/assign-room`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ roomId: id, studentId }),

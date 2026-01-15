@@ -11,6 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Building2, Plus, Search, ChevronLeft, ChevronRight, UserCheck } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from 'sonner';
+import { API_BASE_URL } from '@/lib/api';
 
 const statusColors = {
   Available: 'bg-green-100 text-green-800',
@@ -40,12 +42,15 @@ const Rooms = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await fetch('http://localhost:5002/api/admin/rooms');
-        if (response.ok) {
-          setRooms(await response.json());
+        const res = await fetch(`${API_BASE_URL}/api/admin/rooms`);
+        if (res.ok) {
+          setRooms(await res.json());
+        } else {
+          toast.error("Failed to fetch rooms.");
         }
       } catch (error) {
         console.error("Failed to fetch rooms:", error);
+        toast.error("An unexpected error occurred while fetching rooms.");
       } finally {
         setLoading(false);
       }

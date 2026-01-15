@@ -28,6 +28,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '@/lib/api';
 
 const StudentDirectory = () => {
     const { user } = useAuth();
@@ -46,7 +47,7 @@ const StudentDirectory = () => {
 
     const fetchStudents = async () => {
         try {
-            const res = await fetch('http://localhost:5002/api/admin/users');
+            const res = await fetch(`${API_BASE_URL}/api/admin/users`);
             if (res.ok) {
                 const data = await res.json();
                 // Filter only students
@@ -66,7 +67,7 @@ const StudentDirectory = () => {
         if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) return;
 
         try {
-            const res = await fetch(`http://localhost:5002/api/admin/users/${userId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
                 method: 'DELETE'
             });
             if (res.ok) {

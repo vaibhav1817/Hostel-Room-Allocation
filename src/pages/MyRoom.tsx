@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '@/lib/api';
 import Layout from '@/components/Layout';
 import PageLayout from '@/components/PageLayout';
 import RoomVisualizer from '@/components/RoomVisualizer';
@@ -30,8 +31,8 @@ const MyRoom = () => {
       if (!user) return;
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5002/api/student/me?studentId=${user.id}`);
-        const data = await response.json();
+        const res = await fetch(`${API_BASE_URL}/api/student/me?studentId=${user?.id}`);
+        const data = await res.json();
         setRoomData(data);
       } catch (error) {
         console.error("Failed to fetch room:", error);
