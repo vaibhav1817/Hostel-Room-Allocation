@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 // const Razorpay = require('razorpay'); // Uncomment when you have keys
 
 const app = express();
@@ -12,9 +15,6 @@ app.use(express.json());
 // Serve static files from the React app build
 app.use(express.static(path.join(__dirname, '../dist')));
 
-const fs = require('fs');
-const path = require('path');
-const multer = require('multer');
 
 // Configure Multer Storage
 const storage = multer.diskStorage({
