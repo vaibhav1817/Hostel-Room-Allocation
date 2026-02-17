@@ -11,10 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 5002;
 const ALLOWED_ADMIN_IDS = ['ADM-001', 'ADM-002', 'ADM-003', 'ADM-004', 'ADM-005'];
 
-app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    credentials: true
-}));
+// CORS configuration - Allow all origins in development
+app.use(cors());
 app.use(express.json());
 
 // Session configuration

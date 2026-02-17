@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CORS Test</title>
+</head>
+
+<body>
+    <h1>Testing Backend Connection</h1>
+    <button onclick="testBackend()">Test Backend</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testBackend() {
+            const result = document.getElementById('result');
+            result.textContent = 'Testing...';
+
+            try {
+                // Test 1: OAuth Status
+                const res1 = await fetch('http://localhost:5002/api/auth/oauth-status');
+                const data1 = await res1.json();
+                result.textContent = 'OAuth Status: ' + JSON.stringify(data1, null, 2);
+
+                // Test 2: Check if server is responding
+                result.textContent += '\n\nServer is responding correctly!';
+            } catch (error) {
+                result.textContent = 'ERROR: ' + error.message;
+                console.error(error);
+            }
+        }
+
+        // Auto-test on load
+        window.onload = testBackend;
+    </script>
+</body>
+
+</html>
