@@ -3,14 +3,34 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const session = require('express-session');
+const passport = require('./config/passport');
 // const Razorpay = require('razorpay'); // Uncomment when you have keys
 
 const app = express();
 const PORT = process.env.PORT || 5002;
 const ALLOWED_ADMIN_IDS = ['ADM-001', 'ADM-002', 'ADM-003', 'ADM-004', 'ADM-005'];
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true
+}));
 app.use(express.json());
+
+// Session configuration
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'hostel-room-allocation-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Serve static files from the React app build
 app.use(express.static(path.join(__dirname, '../dist')));
@@ -772,6 +792,40 @@ app.delete('/api/announcements/:id', (req, res) => {
     notes = notes.filter(n => n.id != id);
     writeJsonDB(NOTES_DB, notes);
     res.json({ success: true });
+});
+
+// ========== GOOGLE OAUTH ROUTES ==========
+// Initiate Google OAuth
+app.get('/api/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+// Google OAuth Callback
+app.get('/api/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        // Successful authentication
+        res.redirect(`/?oauth=success&user=${encodeURIComponent(JSON.stringify(req.user))}`);
+    }
+);
+
+// Get current user (for checking auth status)
+app.get('/api/auth/me', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.json({ success: true, user: req.user });
+    } else {
+        res.status(401).json({ success: false, message: 'Not authenticated' });
+    }
+});
+
+// Logout
+app.post('/api/auth/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Logout failed' });
+        }
+        res.json({ success: true, message: 'Logged out successfully' });
+    });
 });
 
 // Serve index.html for all other routes (React Router support)
