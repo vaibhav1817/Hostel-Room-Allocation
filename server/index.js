@@ -818,6 +818,19 @@ app.get('/api/auth/me', (req, res) => {
     }
 });
 
+// Check if OAuth is configured
+app.get('/api/auth/oauth-status', (req, res) => {
+    const isConfigured =
+        process.env.GOOGLE_CLIENT_ID &&
+        process.env.GOOGLE_CLIENT_ID !== 'your-client-id' &&
+        process.env.GOOGLE_CLIENT_SECRET &&
+        process.env.GOOGLE_CLIENT_SECRET !== 'your-client-secret';
+
+    res.json({
+        oauthEnabled: !!isConfigured
+    });
+});
+
 // Logout
 app.post('/api/auth/logout', (req, res) => {
     req.logout((err) => {
